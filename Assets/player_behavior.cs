@@ -115,6 +115,17 @@ public class player_behavior : MonoBehaviour
                 alive = false;
             }
         } 
+        if (collision.gameObject.CompareTag("health_boost")) 
+        { 
+            // destroy health booster
+            Destroy(collision.gameObject);
+            health += 1;
+        }
+        if(collision.gameObject.CompareTag("stamina_boost")){
+            // destroy stamina booster
+            Destroy(collision.gameObject);
+            stamina = 10;
+        }
     } 
 }
 

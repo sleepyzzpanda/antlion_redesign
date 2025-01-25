@@ -14,6 +14,7 @@ public class scene_behavior : MonoBehaviour
     public GameObject floor_tile;
     public GameObject player;
     public GameObject obstacle_1;
+    public GameObject health_booster, stamina_booster;
     public float speed;
     public Text HP, STAMINA, GAMEOVER;
     // -----------------------------------------------
@@ -66,7 +67,23 @@ public class scene_behavior : MonoBehaviour
         // generate obstacle 1
         if(obstacle_spawn_timer > obstacle_spawn_rate)
         {
-            Instantiate(obstacle_1, new Vector3(10, -0.46f, 0), transform.rotation);
+            if(Random.Range(0, 2) == 0){
+                // generate random booster
+                if(Random.Range(0, 2) == 0){
+                    // health booster
+                    Instantiate(health_booster, new Vector3(10, -0.46f, 0), transform.rotation);
+                }
+                else{
+                    // stamina booster
+                    Instantiate(stamina_booster, new Vector3(10, -0.46f, 0), transform.rotation);
+                }
+                    
+            } else {
+                // generate obstacle 1
+                Instantiate(obstacle_1, new Vector3(10, -0.46f, 0), transform.rotation);
+            }
+
+            // reset timer
             obstacle_spawn_timer = 0.0f;
         }
         else

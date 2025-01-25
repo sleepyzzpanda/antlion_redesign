@@ -6,6 +6,8 @@ TagManager:
   tags:
   - Undefined
   - Obstacle
+  - health_boost
+  - stamina_boost
   layers:
   - Default
   - TransparentFX
