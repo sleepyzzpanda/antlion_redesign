@@ -21,7 +21,7 @@ public class player_behavior : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         collider = GetComponent<BoxCollider2D>();
         health = 5;
-        stamina = 5;
+        stamina = 10;
         scroll_speed = 1.0f;
         is_jumping = false;
         //boost_timer = 0.0f;
@@ -35,11 +35,17 @@ public class player_behavior : MonoBehaviour
 
         // jumping
         if(Input.GetKey(KeyCode.UpArrow)){
-            is_jumping = true;
+            // check y pos < 0;
+            if(transform.position.y < -0.46f){
+                is_jumping = true;
+            }
         }
         else if(Input.GetKey(KeyCode.LeftArrow)){
             if(Input.GetKey(KeyCode.UpArrow)){
-                is_jumping = true;
+                // check y pos < 0;
+                if(transform.position.y < -0.46f){
+                    is_jumping = true;
+                }
             }
             if(is_jumping){
                 rb.velocity = new Vector2(-2, 10);
@@ -49,7 +55,10 @@ public class player_behavior : MonoBehaviour
             }
         } else if(Input.GetKey(KeyCode.RightArrow)){
             if(Input.GetKey(KeyCode.UpArrow)){
-                is_jumping = true;
+                // check y pos < 0;
+                if(transform.position.y < -0.46f){
+                    is_jumping = true;
+                }
             }
             if(is_jumping){
                 rb.velocity = new Vector2(3, 10);
@@ -75,7 +84,7 @@ public class player_behavior : MonoBehaviour
         }
 
         // update stamina
-        if(stamina < 5 && Time.frameCount % 100 == 0){
+        if(stamina < 10 && Time.frameCount % 100 == 0){
             stamina += 1;
         }
 

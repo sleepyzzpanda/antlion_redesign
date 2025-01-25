@@ -1,24 +1,36 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class scene_behavior : MonoBehaviour
 {
-    
-    public float floor_spawn_rate = 0.6f;
-    private float floor_spawn_timer = 0.0f;
+    // vairaible parking lot -------------------------
+    public float floor_spawn_rate;
+    private float floor_spawn_timer;
     // for obstacle 1
     public float obstacle_spawn_rate;
-    private float obstacle_spawn_timer = 0.0f;
+    private float obstacle_spawn_timer;
     public GameObject floor_tile;
     public GameObject player;
     public GameObject obstacle_1;
-    public float speed = 1.0f;
+    public float speed;
+    public Text HP, STAMINA, GAMEOVER;
+    // -----------------------------------------------
+
+
     // Start is called before the first frame update
     void Start()
     {
-        Time.timeScale = 1.0f;
-        
+        floor_spawn_rate = 0.6f;
+        floor_spawn_timer = 0.0f;
+        obstacle_spawn_timer = 0.0f;
+        speed = 1.0f;
+        Time.timeScale = 1.0f;  
+
+        // set gameover text to inactive
+        GAMEOVER.gameObject.SetActive(false);   
+   
     }
 
     // Update is called once per frame
@@ -32,6 +44,11 @@ public class scene_behavior : MonoBehaviour
         if(player.GetComponent<player_behavior>().alive == false)
         {
             Time.timeScale = 0.0f;
+            // update hp text
+            HP.text = "HP: 0"; 
+
+            // set gameover text to active
+            GAMEOVER.gameObject.SetActive(true);
             return;
         }
 
@@ -56,6 +73,10 @@ public class scene_behavior : MonoBehaviour
         {
             obstacle_spawn_timer += Time.deltaTime;
         }
+
+        // update UI
+        HP.text = "HP: " + player.GetComponent<player_behavior>().health;
+        STAMINA.text = "STAMINA: " + player.GetComponent<player_behavior>().stamina;
 
     }
 }
