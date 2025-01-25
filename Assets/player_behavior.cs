@@ -4,17 +4,28 @@ using UnityEngine;
 
 public class player_behavior : MonoBehaviour
 {
+    // variable parking lot -------------------------
     public Rigidbody2D rb;
     public BoxCollider2D collider;
-    public int health = 5;
+    public int health;
+    public int stamina;
     public float scroll_speed;
-    private bool is_jumping = false;
-    public float boost_timer = 0.0f;
-    public bool alive = true;
+    private bool is_jumping;
+    //public float boost_timer;
+    public bool alive;
+    // -----------------------------------------------
+
     // Start is called before the first frame update
     void Start()
     {
-        
+        rb = GetComponent<Rigidbody2D>();
+        collider = GetComponent<BoxCollider2D>();
+        health = 5;
+        stamina = 5;
+        scroll_speed = 1.0f;
+        is_jumping = false;
+        //boost_timer = 0.0f;
+        alive = true;        
     }
 
     // Update is called once per frame
@@ -41,7 +52,7 @@ public class player_behavior : MonoBehaviour
                 is_jumping = true;
             }
             if(is_jumping){
-                rb.velocity = new Vector2(2, 10);
+                rb.velocity = new Vector2(3, 10);
             } else {
                 rb.velocity = new Vector2(1, -5);
                 speed_boost();
@@ -62,23 +73,27 @@ public class player_behavior : MonoBehaviour
         if(transform.position.y < -0.46f){
             transform.position = new Vector3(transform.position.x, -0.46f, transform.position.z);
         }
+
+        // update stamina
+        if(stamina < 5 && Time.frameCount % 100 == 0){
+            stamina += 1;
+        }
+
+        // check if player is still in bounds
+        if(transform.position.x < -11f){
+            alive = false;
+        }
         
     }
 
     public void speed_boost(){
         // speed boost
-        // private bool is_boosting = false;
+        // based on stamina
         if(Input.GetKey(KeyCode.Space)){
-            boost_timer += Time.deltaTime;
-            if(boost_timer > 0.3f){
-                // forces cooldown
-                if(boost_timer > 0.8f){
-                    boost_timer = 0.0f;
-                }
-            } else {
+            if(stamina > 0){
                 rb.velocity *= 15;
-                boost_timer += Time.deltaTime;
-            }  
+                stamina -= 1;
+            }
         }
     }
 
