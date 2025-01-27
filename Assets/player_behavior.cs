@@ -16,6 +16,7 @@ public class player_behavior : MonoBehaviour
     //public float boost_timer;
     public bool alive, slow;
     private float slow_time;
+    public bool gameover;
     // -----------------------------------------------
 
     // Start is called before the first frame update
@@ -30,6 +31,7 @@ public class player_behavior : MonoBehaviour
         max_health = 5;
         alive = true;        
         slow = false;
+        gameover = false;
         slow_time = 0.0f;
     }
 
@@ -61,17 +63,18 @@ public class player_behavior : MonoBehaviour
             }
             if(is_jumping){
                 if(slow){
-                    rb.velocity = new Vector2(-0.1f, 10);
+                    rb.velocity = new Vector2(-1.0f, 10);
                 } else {
                     rb.velocity = new Vector2(-2.2f, 10);
                 }
             } else {
                 if(slow){
-                    rb.velocity = new Vector2(-0.1f, -5);
+                    rb.velocity = new Vector2(-1.0f, -5);
                 } else {
                     rb.velocity = new Vector2(-2.2f, -5);
+                    speed_boost();
                 }
-                speed_boost();
+                
             }
         } else if(Input.GetKey(KeyCode.RightArrow)){
             if(Input.GetKey(KeyCode.UpArrow)){
@@ -91,8 +94,9 @@ public class player_behavior : MonoBehaviour
                     rb.velocity = new Vector2(1, -5);
                 } else {
                     rb.velocity = new Vector2(2.2f, -5);
+                    speed_boost();
                 }
-                speed_boost();
+                
             }
         } else {
             if(is_jumping){
@@ -177,6 +181,10 @@ public class player_behavior : MonoBehaviour
             // destroy tumbleweed
             Destroy(collision.gameObject);
             slow_time = 3.0f;
+        }
+        // collided with end of level flag
+        if(collision.gameObject.CompareTag("Flag")){
+            gameover = true;
         }
     } 
 }

@@ -11,13 +11,15 @@ public class scene_behavior : MonoBehaviour
     // for obstacle 1
     public float obstacle_spawn_rate, coin_spawn_rate, falling_rock_spawn_rate;
     private int coin_count; // defines how many coins to spawn
-    private float obstacle_spawn_timer, coin_spawn_timer, falling_rock_spawn_timer;
+    public float obstacle_spawn_timer, coin_spawn_timer, falling_rock_spawn_timer;
     public GameObject floor_tile;
     public GameObject player;
     public GameObject obstacle_1, falling_rock;
-    public GameObject health_booster, stamina_booster, coin_booster, cobweb, tumbleweed;
+    public GameObject health_booster, stamina_booster, coin_booster, cobweb, tumbleweed, flag;
     private float speed;
-    public Text HP, STAMINA, GAMEOVER, COINS;
+    public Text HP, STAMINA, GAMEOVER, COINS, PROGRESS, WINNER;
+    private int progress_counter;
+    private bool gameover, sent_flag;
     // -----------------------------------------------
 
 
@@ -32,11 +34,15 @@ public class scene_behavior : MonoBehaviour
         coin_count = 3;
         coin_spawn_timer = 0.0f;
         coin_spawn_rate = 3.2f;
-        falling_rock_spawn_rate = 10.0f;
+        falling_rock_spawn_rate = 16.2f;
         falling_rock_spawn_timer = 0.0f;
+        progress_counter = 0;
+        gameover = false;
+        sent_flag = false;
 
         // set gameover text to inactive
-        GAMEOVER.gameObject.SetActive(false);   
+        GAMEOVER.gameObject.SetActive(false);  
+        WINNER.gameObject.SetActive(false); 
    
     }
 
@@ -55,6 +61,15 @@ public class scene_behavior : MonoBehaviour
             return;
         }
 
+        // check if player has reached the end
+        if(player.GetComponent<player_behavior>().gameover == true)
+        {
+            Time.timeScale = 0.0f;
+            // set winner text to active
+            WINNER.gameObject.SetActive(true);
+            return;
+        }
+
         // generate floor tiles
         if(floor_spawn_timer > floor_spawn_rate)
         {
@@ -69,7 +84,16 @@ public class scene_behavior : MonoBehaviour
         // generate obstacles + boosters
         if(obstacle_spawn_timer > obstacle_spawn_rate)
         {
-            if(Random.Range(0, 4) == 0){ // 1 in 4 chance of booster
+            if(progress_counter >= 100){
+               // instantiate end of level flag;
+               if(!sent_flag){
+                   sent_flag = true;
+                   // instantiate flag here
+                     Instantiate(flag, new Vector3(10, -0.46f, 0), transform.rotation);
+               }
+               return;
+            }
+            else if(Random.Range(0, 4) == 0){ // 1 in 4 chance of booster
                 int selection = Random.Range(0, 3);
                 // generate random booster
                 if(selection == 0){
@@ -132,18 +156,26 @@ public class scene_behavior : MonoBehaviour
         // generate falling rocks
         if(falling_rock_spawn_timer > falling_rock_spawn_rate)
         {
-            Instantiate(falling_rock, new Vector3(10, 8.4f, 0), transform.rotation);
-            falling_rock_spawn_timer = 0.0f;
+            if(Random.Range(0, 2) == 0){
+                Instantiate(falling_rock, new Vector3(10, 8.4f, 0), transform.rotation);
+                falling_rock_spawn_timer = 0.0f;
+            }
+            
         }
         else
         {
             falling_rock_spawn_timer += Time.deltaTime;
+        }
+        // update progress counter
+        if(progress_counter < 100 && Time.frameCount % 100 == 0){
+            progress_counter += 1;
         }
 
         // update UI
         HP.text = "HP: " + player.GetComponent<player_behavior>().health;
         STAMINA.text = "STAMINA: " + player.GetComponent<player_behavior>().stamina;
         COINS.text = "COINS: " + player.GetComponent<player_behavior>().coins;
+        PROGRESS.text = "PROGRESS: " + progress_counter + "%";
 
     }
 }
