@@ -9,6 +9,8 @@ TagManager:
   - health_boost
   - stamina_boost
   - Coin
+  - Cobweb
+  - Tumbleweed
   layers:
   - Default
   - TransparentFX

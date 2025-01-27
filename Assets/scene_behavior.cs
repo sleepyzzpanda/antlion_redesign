@@ -15,7 +15,7 @@ public class scene_behavior : MonoBehaviour
     public GameObject floor_tile;
     public GameObject player;
     public GameObject obstacle_1;
-    public GameObject health_booster, stamina_booster, coin_booster;
+    public GameObject health_booster, stamina_booster, coin_booster, cobweb, tumbleweed;
     private float speed;
     public Text HP, STAMINA, GAMEOVER, COINS;
     // -----------------------------------------------
@@ -64,16 +64,27 @@ public class scene_behavior : MonoBehaviour
             floor_spawn_timer += Time.deltaTime;
         } 
 
-        // generate obstacle 1
+        // generate obstacles + boosters
         if(obstacle_spawn_timer > obstacle_spawn_rate)
         {
             if(Random.Range(0, 4) == 0){ // 1 in 4 chance of booster
+                int selection = Random.Range(0, 3);
                 // generate random booster
-                if(Random.Range(0, 2) == 0){
+                if(selection == 0){
                     // health booster
                     Instantiate(health_booster, new Vector3(10, -0.46f, 0), transform.rotation);
                 }
-                else{
+                else if(selection == 1){
+                    // random between tumbleweed and cobweb
+                    int selection2 = Random.Range(0, 2);
+                    if(selection2 == 0){
+                        // tumbleweed
+                        Instantiate(tumbleweed, new Vector3(10, -0.46f, 0), transform.rotation);
+                    } else{
+                        // cobweb
+                        Instantiate(cobweb, new Vector3(10, -0.46f, 0), transform.rotation);
+                    }
+                } else{
                     // stamina booster
                     Instantiate(stamina_booster, new Vector3(10, -0.46f, 0), transform.rotation);
                 }

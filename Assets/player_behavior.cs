@@ -14,7 +14,8 @@ public class player_behavior : MonoBehaviour
     private float scroll_speed;
     private bool is_jumping;
     //public float boost_timer;
-    public bool alive;
+    public bool alive, slow;
+    private float slow_time;
     // -----------------------------------------------
 
     // Start is called before the first frame update
@@ -28,13 +29,22 @@ public class player_behavior : MonoBehaviour
         is_jumping = false;
         max_health = 5;
         alive = true;        
+        slow = false;
+        slow_time = 0.0f;
     }
 
     // Update is called once per frame
     void Update()
     {
         // moving mechanics
-
+        // check if player slow
+        if(slow){
+            if(slow_time > 0.0f){
+                slow_time -= Time.deltaTime;
+            } else {
+                slow = false;
+            }
+        }
         // jumping
         if(Input.GetKey(KeyCode.UpArrow)){
             // check y pos < 0;
@@ -50,9 +60,17 @@ public class player_behavior : MonoBehaviour
                 }
             }
             if(is_jumping){
-                rb.velocity = new Vector2(-2, 10);
+                if(slow){
+                    rb.velocity = new Vector2(-0.1f, 10);
+                } else {
+                    rb.velocity = new Vector2(-2.2f, 10);
+                }
             } else {
-                rb.velocity = new Vector2(-2, -5);
+                if(slow){
+                    rb.velocity = new Vector2(-0.1f, -5);
+                } else {
+                    rb.velocity = new Vector2(-2.2f, -5);
+                }
                 speed_boost();
             }
         } else if(Input.GetKey(KeyCode.RightArrow)){
@@ -63,9 +81,17 @@ public class player_behavior : MonoBehaviour
                 }
             }
             if(is_jumping){
-                rb.velocity = new Vector2(3, 10);
+                if(slow){
+                    rb.velocity = new Vector2(1, 10);
+                } else {
+                    rb.velocity = new Vector2(2.2f, 10);
+                }
             } else {
-                rb.velocity = new Vector2(1, -5);
+                if(slow){
+                    rb.velocity = new Vector2(1, -5);
+                } else {
+                    rb.velocity = new Vector2(2.2f, -5);
+                }
                 speed_boost();
             }
         } else {
@@ -102,7 +128,9 @@ public class player_behavior : MonoBehaviour
         // based on stamina
         if(Input.GetKey(KeyCode.Space)){
             if(stamina > 0){
-                rb.velocity *= 15;
+                Vector2 new_vel = rb.velocity;
+                new_vel.x *= 10;
+                rb.velocity = new_vel;
                 stamina -= 1;
             }
         }
@@ -136,6 +164,19 @@ public class player_behavior : MonoBehaviour
             Destroy(collision.gameObject);
             // add to score
             coins += 1;
+        }
+        // cobweb
+        if(collision.gameObject.CompareTag("Cobweb")){
+            // todo
+            // destroy cobweb
+            Destroy(collision.gameObject);
+        }
+        // tumbleweed slows player
+        if(collision.gameObject.CompareTag("Tumbleweed")){
+            slow = true;
+            // destroy tumbleweed
+            Destroy(collision.gameObject);
+            slow_time = 3.0f;
         }
     } 
 }

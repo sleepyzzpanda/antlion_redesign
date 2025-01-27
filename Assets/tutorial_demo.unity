@@ -1630,7 +1630,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
 --- !u!4 &1488812777 stripped
 Transform:
@@ -1945,8 +1945,8 @@ MonoBehaviour:
   health: 5
   stamina: 0
   coins: 0
-  scroll_speed: 1
   alive: 1
+  slow: 0
 --- !u!50 &1767225600
 Rigidbody2D:
   serializedVersion: 4
@@ -1981,7 +1981,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.007368088, y: -0.23391742}
+  m_Offset: {x: 0.017765999, y: -0.21776024}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -1992,7 +1992,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.511713, y: 0.61816204}
+  m_Size: {x: 0.4973507, y: 0.5858477}
   m_EdgeRadius: 0
 --- !u!4 &1858494162 stripped
 Transform:
@@ -2253,6 +2253,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 784179570}
     - target: {fileID: 7562078717393170176, guid: 9555a6ec591dc3d4db4bb51b83539a4d, type: 3}
+      propertyPath: cobweb
+      value: 
+      objectReference: {fileID: 8926694610835649055, guid: cde2603d0f4ade44c8b0eb70ae3c91cb, type: 3}
+    - target: {fileID: 7562078717393170176, guid: 9555a6ec591dc3d4db4bb51b83539a4d, type: 3}
       propertyPath: player
       value: 
       objectReference: {fileID: 1767225596}
@@ -2265,6 +2269,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1625955140}
     - target: {fileID: 7562078717393170176, guid: 9555a6ec591dc3d4db4bb51b83539a4d, type: 3}
+      propertyPath: tumbleweed
+      value: 
+      objectReference: {fileID: 9183951691473011594, guid: a26cacf9446eee044850f4fb03af555f, type: 3}
+    - target: {fileID: 7562078717393170176, guid: 9555a6ec591dc3d4db4bb51b83539a4d, type: 3}
       propertyPath: coin_booster
       value: 
       objectReference: {fileID: 7383882679627618337, guid: 5596a5cf3566c9b47b3269d173260dd4, type: 3}
@@ -2274,7 +2282,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7562078717393170179, guid: 9555a6ec591dc3d4db4bb51b83539a4d, type: 3}
       propertyPath: m_RootOrder
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7562078717393170179, guid: 9555a6ec591dc3d4db4bb51b83539a4d, type: 3}
       propertyPath: m_LocalPosition.x
