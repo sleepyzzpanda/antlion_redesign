@@ -5,14 +5,14 @@ using UnityEngine;
 public class health_booster : MonoBehaviour
 {
     //---variable parking lot-----------------------
-    public float booster_speed;
+    private float booster_speed;
     private float deadzone;
     public BoxCollider2D collider;
     //----------------------------------------------
     // Start is called before the first frame update
     void Start()
     {
-        booster_speed = 1.0f;
+        booster_speed = 1.5f;
         deadzone = -20;
         
     }

@@ -8,6 +8,7 @@ TagManager:
   - Obstacle
   - health_boost
   - stamina_boost
+  - Coin
   layers:
   - Default
   - TransparentFX

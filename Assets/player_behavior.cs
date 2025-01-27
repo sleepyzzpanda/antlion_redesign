@@ -8,8 +8,10 @@ public class player_behavior : MonoBehaviour
     public Rigidbody2D rb;
     public BoxCollider2D collider;
     public int health;
+    private int max_health;
     public int stamina;
-    public float scroll_speed;
+    public int coins;
+    private float scroll_speed;
     private bool is_jumping;
     //public float boost_timer;
     public bool alive;
@@ -20,11 +22,11 @@ public class player_behavior : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         collider = GetComponent<BoxCollider2D>();
-        health = 5;
+        health = 3;
         stamina = 10;
-        scroll_speed = 1.0f;
+        scroll_speed = 1.5f;
         is_jumping = false;
-        //boost_timer = 0.0f;
+        max_health = 5;
         alive = true;        
     }
 
@@ -119,12 +121,21 @@ public class player_behavior : MonoBehaviour
         { 
             // destroy health booster
             Destroy(collision.gameObject);
-            health += 1;
+            if(health < max_health){
+                health += 1;
+            }
         }
         if(collision.gameObject.CompareTag("stamina_boost")){
             // destroy stamina booster
             Destroy(collision.gameObject);
             stamina = 10;
+        }
+        // coins
+        if(collision.gameObject.CompareTag("Coin")){
+            // destroy coin
+            Destroy(collision.gameObject);
+            // add to score
+            coins += 1;
         }
     } 
 }

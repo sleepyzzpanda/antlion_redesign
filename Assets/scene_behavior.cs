@@ -9,25 +9,29 @@ public class scene_behavior : MonoBehaviour
     public float floor_spawn_rate;
     private float floor_spawn_timer;
     // for obstacle 1
-    public float obstacle_spawn_rate;
-    private float obstacle_spawn_timer;
+    public float obstacle_spawn_rate, coin_spawn_rate;
+    private int coin_count; // defines how many coins to spawn
+    private float obstacle_spawn_timer, coin_spawn_timer;
     public GameObject floor_tile;
     public GameObject player;
     public GameObject obstacle_1;
-    public GameObject health_booster, stamina_booster;
-    public float speed;
-    public Text HP, STAMINA, GAMEOVER;
+    public GameObject health_booster, stamina_booster, coin_booster;
+    private float speed;
+    public Text HP, STAMINA, GAMEOVER, COINS;
     // -----------------------------------------------
 
 
     // Start is called before the first frame update
     void Start()
     {
-        floor_spawn_rate = 0.6f;
+        floor_spawn_rate = 0.7f;
         floor_spawn_timer = 0.0f;
         obstacle_spawn_timer = 0.0f;
-        speed = 1.0f;
+        speed = 1.5f;
         Time.timeScale = 1.0f;  
+        coin_count = 3;
+        coin_spawn_timer = 0.0f;
+        coin_spawn_rate = 3.2f;
 
         // set gameover text to inactive
         GAMEOVER.gameObject.SetActive(false);   
@@ -37,10 +41,6 @@ public class scene_behavior : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // update speeds
-        floor_tile.GetComponent<floor_behavior>().floor_speed = speed;
-        obstacle_1.GetComponent<obstacle_behavior>().obstacle_speed = speed;
-        player.GetComponent<player_behavior>().scroll_speed = speed;
         // check if player is alive
         if(player.GetComponent<player_behavior>().alive == false)
         {
@@ -67,7 +67,7 @@ public class scene_behavior : MonoBehaviour
         // generate obstacle 1
         if(obstacle_spawn_timer > obstacle_spawn_rate)
         {
-            if(Random.Range(0, 2) == 0){
+            if(Random.Range(0, 4) == 0){ // 1 in 4 chance of booster
                 // generate random booster
                 if(Random.Range(0, 2) == 0){
                     // health booster
@@ -80,7 +80,15 @@ public class scene_behavior : MonoBehaviour
                     
             } else {
                 // generate obstacle 1
-                Instantiate(obstacle_1, new Vector3(10, -0.46f, 0), transform.rotation);
+                Instantiate(obstacle_1, new Vector3(10, -0.81f, 0), transform.rotation);
+                // instantiate coins based on probability
+                if(Random.Range(0, 3) == 0){
+                    for(int i = 0; i < coin_count; i++)
+                    {
+                        // offset the xpos by 0.5
+                        Instantiate(coin_booster, new Vector3(12 + (i * 0.5f), -0.46f, 0), transform.rotation);
+                    }
+                }
             }
 
             // reset timer
@@ -89,11 +97,29 @@ public class scene_behavior : MonoBehaviour
         else
         {
             obstacle_spawn_timer += Time.deltaTime;
+            /*COME BACK TO THIS*/
+            // // no obstacle or booster so deploy coin booster
+            // // in multiple of coin count
+            // if(coin_spawn_timer > coin_spawn_rate)
+            // {
+            //     for(int i = 0; i < coin_count; i++)
+            //     {
+            //         // offset the xpos by 0.8
+            //         Instantiate(coin_booster, new Vector3(11 + (i * 0.5f), -0.46f, 0), transform.rotation);
+            //     }
+            //     coin_spawn_timer = 0.0f;
+            // }
+            // else
+            // {
+            //     coin_spawn_timer += Time.deltaTime;
+            // }
+
         }
 
         // update UI
         HP.text = "HP: " + player.GetComponent<player_behavior>().health;
         STAMINA.text = "STAMINA: " + player.GetComponent<player_behavior>().stamina;
+        COINS.text = "COINS: " + player.GetComponent<player_behavior>().coins;
 
     }
 }
