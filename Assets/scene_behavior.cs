@@ -9,12 +9,12 @@ public class scene_behavior : MonoBehaviour
     public float floor_spawn_rate;
     private float floor_spawn_timer;
     // for obstacle 1
-    public float obstacle_spawn_rate, coin_spawn_rate;
+    public float obstacle_spawn_rate, coin_spawn_rate, falling_rock_spawn_rate;
     private int coin_count; // defines how many coins to spawn
-    private float obstacle_spawn_timer, coin_spawn_timer;
+    private float obstacle_spawn_timer, coin_spawn_timer, falling_rock_spawn_timer;
     public GameObject floor_tile;
     public GameObject player;
-    public GameObject obstacle_1;
+    public GameObject obstacle_1, falling_rock;
     public GameObject health_booster, stamina_booster, coin_booster, cobweb, tumbleweed;
     private float speed;
     public Text HP, STAMINA, GAMEOVER, COINS;
@@ -32,6 +32,8 @@ public class scene_behavior : MonoBehaviour
         coin_count = 3;
         coin_spawn_timer = 0.0f;
         coin_spawn_rate = 3.2f;
+        falling_rock_spawn_rate = 10.0f;
+        falling_rock_spawn_timer = 0.0f;
 
         // set gameover text to inactive
         GAMEOVER.gameObject.SetActive(false);   
@@ -125,6 +127,17 @@ public class scene_behavior : MonoBehaviour
             //     coin_spawn_timer += Time.deltaTime;
             // }
 
+        }
+
+        // generate falling rocks
+        if(falling_rock_spawn_timer > falling_rock_spawn_rate)
+        {
+            Instantiate(falling_rock, new Vector3(10, 8.4f, 0), transform.rotation);
+            falling_rock_spawn_timer = 0.0f;
+        }
+        else
+        {
+            falling_rock_spawn_timer += Time.deltaTime;
         }
 
         // update UI
