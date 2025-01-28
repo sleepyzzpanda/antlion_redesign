@@ -17,8 +17,13 @@ public class player_behavior : MonoBehaviour
     //public float boost_timer;
     public bool alive, slow, antlion_slow;
     private float antlion_slow_time;
-    private float slow_time;
+    public float slow_time;
     public bool gameover;
+    public SpriteRenderer sprite_renderer;
+    public Sprite player_sprite;
+    public Sprite player_sprite_jump;
+    public AudioSource audio_player;
+    public AudioClip coin_sound, powerup_sound, damage_sound, gameover_sound, antlion_sound, win_sound, jump_sound;
     //public Text key;
     //string key_text = "KEY: ";
     // -----------------------------------------------
@@ -72,7 +77,11 @@ public class player_behavior : MonoBehaviour
             // check y pos < 0;
             if(transform.position.y < 0.0f){
                 is_jumping = true;
+                // play jump sound
+                audio_player.PlayOneShot(jump_sound);
             }
+            // change to jumping sprite
+            sprite_renderer.sprite = player_sprite_jump;
         }
         else if(Input.GetKey(KeyCode.LeftArrow)){
             // key text
@@ -89,6 +98,8 @@ public class player_behavior : MonoBehaviour
                 } else {
                     rb.velocity = new Vector2(-4.2f, 10);
                 }
+                // jumping sprite
+                sprite_renderer.sprite = player_sprite_jump;
             } else {
                 if(slow){
                     rb.velocity = new Vector2(-1.0f, -5);
@@ -96,7 +107,8 @@ public class player_behavior : MonoBehaviour
                     rb.velocity = new Vector2(-4.2f, -5);
                     speed_boost();
                 }
-                
+                // change to normal sprite
+                sprite_renderer.sprite = player_sprite;                
             }
         } else if(Input.GetKey(KeyCode.RightArrow)){
             // key text
@@ -113,6 +125,8 @@ public class player_behavior : MonoBehaviour
                 } else {
                     rb.velocity = new Vector2(4.2f, 10);
                 }
+                // jumping sprite
+                sprite_renderer.sprite = player_sprite_jump;
             } else {
                 if(slow){
                     rb.velocity = new Vector2(1, -5);
@@ -120,7 +134,8 @@ public class player_behavior : MonoBehaviour
                     rb.velocity = new Vector2(4.2f, -5);
                     speed_boost();
                 }
-                
+                // change to normal sprite
+                sprite_renderer.sprite = player_sprite;
             }
             // make sure player stays in bounds
             if(transform.position.x > 9.66f){
@@ -129,19 +144,18 @@ public class player_behavior : MonoBehaviour
         } else {
             if(is_jumping){
                 rb.velocity = new Vector2(-scroll_speed, 10);
+                // jumping sprite
+                sprite_renderer.sprite = player_sprite_jump;
             } else {
                 rb.velocity = new Vector2(-scroll_speed, -5);
+                // change to normal sprite
+                sprite_renderer.sprite = player_sprite;
             }
         }
 
         if(transform.position.y > 1.2f){
             is_jumping = false;
         }
-
-        // // countering gravity for testing, need to remove and properly implement
-        // if(transform.position.y < -0.46f){
-        //     transform.position = new Vector3(transform.position.x, -0.46f, transform.position.z);
-        // }
 
         // update stamina
         if(stamina < 10 && Time.frameCount % 100 == 0){
@@ -154,6 +168,7 @@ public class player_behavior : MonoBehaviour
         }
         
     }
+
 
     public void speed_boost(){
         // speed boost
@@ -175,11 +190,15 @@ public class player_behavior : MonoBehaviour
             health -= 1;
             if(health <= 0){
                 alive = false;
+                // play gameover sound
+                audio_player.PlayOneShot(gameover_sound);
             }
             slow = true;
             slow_time = 3.0f;
             // destroy obstacle
             Destroy(collision.gameObject);
+            // play damage sound
+            audio_player.PlayOneShot(damage_sound);
         } 
         if (collision.gameObject.CompareTag("health_boost")) 
         { 
@@ -188,11 +207,15 @@ public class player_behavior : MonoBehaviour
             if(health < max_health){
                 health += 1;
             }
+            // play powerup sound
+            audio_player.PlayOneShot(powerup_sound);
         }
         if(collision.gameObject.CompareTag("stamina_boost")){
             // destroy stamina booster
             Destroy(collision.gameObject);
             stamina = 10;
+            // play powerup sound
+            audio_player.PlayOneShot(powerup_sound);
         }
         // coins
         if(collision.gameObject.CompareTag("Coin")){
@@ -200,6 +223,8 @@ public class player_behavior : MonoBehaviour
             Destroy(collision.gameObject);
             // add to score
             coins += 1;
+            // play coin sound
+            audio_player.PlayOneShot(coin_sound);
         }
         // cobweb
         if(collision.gameObject.CompareTag("Cobweb")){
@@ -208,6 +233,8 @@ public class player_behavior : MonoBehaviour
             Destroy(collision.gameObject);
             antlion_slow = true;
             antlion_slow_time = 3.0f;
+            // play antlion sound
+            audio_player.PlayOneShot(antlion_sound);
         }
         // tumbleweed slows player
         if(collision.gameObject.CompareTag("Tumbleweed")){
@@ -219,12 +246,16 @@ public class player_behavior : MonoBehaviour
         // collided with end of level flag
         if(collision.gameObject.CompareTag("Flag")){
             gameover = true;
+            // play win sound
+            audio_player.PlayOneShot(win_sound);
         }
 
         // antlion
         if(collision.gameObject.CompareTag("Antlion")){
             // game over
             alive = false;
+            // play gameover sound
+            audio_player.PlayOneShot(gameover_sound);
         }
     } 
 }
