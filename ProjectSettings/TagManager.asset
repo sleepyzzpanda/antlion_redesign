@@ -12,6 +12,7 @@ TagManager:
   - Cobweb
   - Tumbleweed
   - Flag
+  - Antlion
   layers:
   - Default
   - TransparentFX

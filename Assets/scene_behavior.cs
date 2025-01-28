@@ -6,30 +6,33 @@ using UnityEngine.UI;
 public class scene_behavior : MonoBehaviour
 {
     // vairaible parking lot -------------------------
-    public float floor_spawn_rate;
-    private float floor_spawn_timer;
+    //public float floor_spawn_rate;
+    //private float floor_spawn_timer;
     // for obstacle 1
     public float obstacle_spawn_rate, coin_spawn_rate, falling_rock_spawn_rate;
     private int coin_count; // defines how many coins to spawn
     public float obstacle_spawn_timer, coin_spawn_timer, falling_rock_spawn_timer;
-    public GameObject floor_tile;
+    //public GameObject floor_tile;
     public GameObject player;
-    public GameObject obstacle_1, falling_rock;
+    public GameObject background;
+    private float bg_rate, bg_timer;
+    public GameObject obstacle_1, falling_rock, thorns;
     public GameObject health_booster, stamina_booster, coin_booster, cobweb, tumbleweed, flag;
     private float speed;
     public Text HP, STAMINA, GAMEOVER, COINS, PROGRESS, WINNER;
     private int progress_counter;
-    private bool gameover, sent_flag;
+    private bool sent_flag;
     // -----------------------------------------------
 
 
     // Start is called before the first frame update
     void Start()
     {
-        floor_spawn_rate = 0.7f;
-        floor_spawn_timer = 0.0f;
+        // floor_spawn_rate = 0.7f;
+        // floor_spawn_timer = 0.0f;
         obstacle_spawn_timer = 0.0f;
-        speed = 1.5f;
+        obstacle_spawn_rate = 2.0f;
+        //speed = 1.5f;
         Time.timeScale = 1.0f;  
         coin_count = 3;
         coin_spawn_timer = 0.0f;
@@ -37,8 +40,10 @@ public class scene_behavior : MonoBehaviour
         falling_rock_spawn_rate = 16.2f;
         falling_rock_spawn_timer = 0.0f;
         progress_counter = 0;
-        gameover = false;
+        //gameover = false;
         sent_flag = false;
+        bg_rate = 10.0f;
+        bg_timer = 0.0f;
 
         // set gameover text to inactive
         GAMEOVER.gameObject.SetActive(false);  
@@ -49,6 +54,7 @@ public class scene_behavior : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //update_bg();
         // check if player is alive
         if(player.GetComponent<player_behavior>().alive == false)
         {
@@ -70,16 +76,16 @@ public class scene_behavior : MonoBehaviour
             return;
         }
 
-        // generate floor tiles
-        if(floor_spawn_timer > floor_spawn_rate)
-        {
-            Instantiate(floor_tile, transform.position, transform.rotation);
-            floor_spawn_timer = 0.0f;
-        }
-        else
-        {
-            floor_spawn_timer += Time.deltaTime;
-        } 
+        // // generate floor tiles
+        // if(floor_spawn_timer > floor_spawn_rate)
+        // {
+        //     Instantiate(floor_tile, transform.position, transform.rotation);
+        //     floor_spawn_timer = 0.0f;
+        // }
+        // else
+        // {
+        //     floor_spawn_timer += Time.deltaTime;
+        // } 
 
         // generate obstacles + boosters
         if(obstacle_spawn_timer > obstacle_spawn_rate)
@@ -105,7 +111,8 @@ public class scene_behavior : MonoBehaviour
                     int selection2 = Random.Range(0, 2);
                     if(selection2 == 0){
                         // tumbleweed
-                        Instantiate(tumbleweed, new Vector3(10, -0.46f, 0), transform.rotation);
+                        float ypos = Random.Range(-0.46f, 1.0f);
+                        Instantiate(tumbleweed, new Vector3(10, ypos, 0), transform.rotation);
                     } else{
                         // cobweb
                         Instantiate(cobweb, new Vector3(10, -0.46f, 0), transform.rotation);
@@ -116,8 +123,14 @@ public class scene_behavior : MonoBehaviour
                 }
                     
             } else {
-                // generate obstacle 1
-                Instantiate(obstacle_1, new Vector3(10, -0.81f, 0), transform.rotation);
+                // generate random obstacle
+                if(Random.Range(0, 3) != 0){
+                    // generate obstacle 1
+                    Instantiate(obstacle_1, new Vector3(10, -0.81f, 0), transform.rotation);
+                } else{
+                    // generate thorns
+                    Instantiate(thorns, new Vector3(10, -0.81f, 0), transform.rotation);
+                }
                 // instantiate coins based on probability
                 if(Random.Range(0, 3) == 0){
                     for(int i = 0; i < coin_count; i++)
@@ -178,4 +191,17 @@ public class scene_behavior : MonoBehaviour
         PROGRESS.text = "PROGRESS: " + progress_counter + "%";
 
     }
+
+    // void update_bg()
+    // {
+    //     if(bg_timer > bg_rate)
+    //     {
+    //         Instantiate(background, new Vector3(33.0f, 4.62f, 5.82f), transform.rotation);
+    //         bg_timer = 0.0f;
+    //     }
+    //     else
+    //     {
+    //         bg_timer += Time.deltaTime;
+    //     }
+    // }
 }

@@ -7,12 +7,12 @@ public class health_booster : MonoBehaviour
     //---variable parking lot-----------------------
     private float booster_speed;
     private float deadzone;
-    public BoxCollider2D collider;
+    public BoxCollider2D bcollider;
     //----------------------------------------------
     // Start is called before the first frame update
     void Start()
     {
-        booster_speed = 1.5f;
+        booster_speed = 3.0f;
         deadzone = -20;
         
     }

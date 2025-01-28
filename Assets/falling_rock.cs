@@ -13,7 +13,7 @@ public class falling_rock : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        scroll_speed = 1.5f;
+        scroll_speed = 3.0f;
         deadzone = Random.Range(-1, 7);
         
     }

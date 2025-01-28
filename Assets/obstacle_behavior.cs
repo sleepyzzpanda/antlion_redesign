@@ -4,12 +4,13 @@ using UnityEngine;
 
 public class obstacle_behavior : MonoBehaviour
 {
-    private float obstacle_speed = 1.5f;
+    private float obstacle_speed;
     private float deadzone = -20;
-    public BoxCollider2D collider;
+    public BoxCollider2D bcollider;
     // Start is called before the first frame update
     void Start()
     {
+        obstacle_speed = 3.0f;
         
     }
 
