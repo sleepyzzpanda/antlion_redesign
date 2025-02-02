@@ -10,12 +10,14 @@ public class scene_behavior : MonoBehaviour
     private int coin_count; // defines how many coins to spawn
     public float obstacle_spawn_timer, coin_spawn_timer, falling_rock_spawn_timer;
     public GameObject player, antlion;
+    // tutorial objects
+    public GameObject tutorial_1, tutorial_2, tutorial_3, tutorial_4, tutorial_5, tutorial_6, tutorial_7;
     public GameObject obstacle_1, falling_rock, thorns;
     public GameObject health_booster, stamina_booster, coin_booster, cobweb, tumbleweed, flag;
     private float speed;
     public Text HP, STAMINA, GAMEOVER, COINS, PROGRESS, WINNER, RESTART;
-    private int progress_counter;
-    private bool sent_flag;
+    private int progress_counter, tutorial_counter;
+    private bool sent_flag, tutorial;
     // -----------------------------------------------
 
 
@@ -36,12 +38,68 @@ public class scene_behavior : MonoBehaviour
         GAMEOVER.gameObject.SetActive(false);  
         WINNER.gameObject.SetActive(false); 
         RESTART.gameObject.SetActive(false);
-   
+
+        // set all UI text to inactive
+        HP.gameObject.SetActive(false);
+        STAMINA.gameObject.SetActive(false);
+        COINS.gameObject.SetActive(false);
+        PROGRESS.gameObject.SetActive(false);
+                
+        // pause all game components
+        Time.timeScale = 0.0f;
+        tutorial = true;   
+        tutorial_counter = 1;
     }
 
     // Update is called once per frame
     void Update()
     {
+        // check if tutorial is playing
+        if(tutorial){
+            switch(tutorial_counter){
+                case 1:
+                    tutorial_1.gameObject.SetActive(true);
+                    break;
+                case 2:
+                    tutorial_1.gameObject.SetActive(false);
+                    tutorial_2.gameObject.SetActive(true);
+                    break;
+                case 3:
+                    tutorial_2.gameObject.SetActive(false);
+                    tutorial_3.gameObject.SetActive(true);
+                    break;
+                case 4:
+                    tutorial_3.gameObject.SetActive(false);
+                    tutorial_4.gameObject.SetActive(true);
+                    break;
+                case 5:
+                    tutorial_4.gameObject.SetActive(false);
+                    tutorial_5.gameObject.SetActive(true);
+                    break;
+                case 6:
+                    tutorial_5.gameObject.SetActive(false);
+                    tutorial_6.gameObject.SetActive(true);
+                    break;
+                case 7:
+                    tutorial_6.gameObject.SetActive(false);
+                    tutorial_7.gameObject.SetActive(true);
+                    break;
+                case 8:
+                    tutorial_7.gameObject.SetActive(false);
+                    Time.timeScale = 1.0f;
+                    tutorial = false;
+                    HP.gameObject.SetActive(true);
+                    STAMINA.gameObject.SetActive(true);
+                    COINS.gameObject.SetActive(true);
+                    PROGRESS.gameObject.SetActive(true);
+                    reset_scene();
+                    break;
+            }
+            // increase counter when player presses C
+            if(Input.GetKeyDown(KeyCode.C)){
+                tutorial_counter += 1;
+            }
+        }
         // check if player is alive
         if(player.GetComponent<player_behavior>().alive == false)
         {

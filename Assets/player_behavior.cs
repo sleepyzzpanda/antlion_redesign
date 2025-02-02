@@ -13,9 +13,10 @@ public class player_behavior : MonoBehaviour
     public int stamina;
     public int coins;
     private float scroll_speed;
+    float xvel, yvel;
     private bool is_jumping;
     //public float boost_timer;
-    public bool alive, slow, antlion_slow;
+    public bool alive, slow, antlion_slow, key_held;
     private float antlion_slow_time;
     public float slow_time;
     public bool gameover;
@@ -44,6 +45,8 @@ public class player_behavior : MonoBehaviour
         slow_time = 0.0f;
         antlion_slow = false;
         antlion_slow_time = 0.0f;
+        xvel = 0.0f;
+        yvel = 0.0f;
         
     }
 
@@ -70,91 +73,72 @@ public class player_behavior : MonoBehaviour
                 slow = false;
             }
         }
+
+        
         // jumping
         if(Input.GetKey(KeyCode.UpArrow)){
-            // key text
-            //key_text += "UP ";
             // check y pos < 0;
             if(transform.position.y < 0.0f){
                 is_jumping = true;
+                yvel = 10.0f;
                 // play jump sound
                 audio_player.PlayOneShot(jump_sound);
             }
             // change to jumping sprite
             sprite_renderer.sprite = player_sprite_jump;
-        }
-        else if(Input.GetKey(KeyCode.LeftArrow)){
-            // key text
-            //key_text += "LEFT ";
-            if(Input.GetKey(KeyCode.UpArrow)){
-                // check y pos < 0;
-                if(transform.position.y < -0.46f){
-                    is_jumping = true;
-                }
-            }
-            if(is_jumping){
-                if(slow){
-                    rb.velocity = new Vector2(-1.0f, 10);
-                } else {
-                    rb.velocity = new Vector2(-4.2f, 10);
-                }
-                // jumping sprite
-                sprite_renderer.sprite = player_sprite_jump;
-            } else {
-                if(slow){
-                    rb.velocity = new Vector2(-1.0f, -5);
-                } else {
-                    rb.velocity = new Vector2(-4.2f, -5);
-                    speed_boost();
-                }
-                // change to normal sprite
-                sprite_renderer.sprite = player_sprite;                
-            }
-        } else if(Input.GetKey(KeyCode.RightArrow)){
-            // key text
-            //key_text += "RIGHT ";
-            if(Input.GetKey(KeyCode.UpArrow)){
-                // check y pos < 0;
-                if(transform.position.y < -0.46f){
-                    is_jumping = true;
-                }
-            }
-            if(is_jumping){
-                if(slow){
-                    rb.velocity = new Vector2(1, 10);
-                } else {
-                    rb.velocity = new Vector2(4.2f, 10);
-                }
-                // jumping sprite
-                sprite_renderer.sprite = player_sprite_jump;
-            } else {
-                if(slow){
-                    rb.velocity = new Vector2(1, -5);
-                } else {
-                    rb.velocity = new Vector2(4.2f, -5);
-                    speed_boost();
-                }
-                // change to normal sprite
-                sprite_renderer.sprite = player_sprite;
-            }
-            // make sure player stays in bounds
-            if(transform.position.x > 9.66f){
-                transform.position = new Vector3(9.66f, transform.position.y, transform.position.z);
-            }
         } else {
             if(is_jumping){
-                rb.velocity = new Vector2(-scroll_speed, 10);
-                // jumping sprite
-                sprite_renderer.sprite = player_sprite_jump;
+                // check for max y pos
+                if(transform.position.y > 1.75f){
+                    is_jumping = false;
+                    // change to normal sprite
+                    sprite_renderer.sprite = player_sprite;
+                }
             } else {
-                rb.velocity = new Vector2(-scroll_speed, -5);
                 // change to normal sprite
                 sprite_renderer.sprite = player_sprite;
+                // set yvel
+                yvel = -5.0f;
             }
         }
+        if(Input.GetKey(KeyCode.LeftArrow)){
+            // keyheld
+            key_held = true;
+            if(slow){
+                xvel = -2.0f;
+            } else {
+                xvel = -scroll_speed - 2.2f;
+            }
+        } else if(Input.GetKey(KeyCode.RightArrow)){
+            // keyheld
+            key_held = true;
+            if(slow){
+                xvel = 2.0f;
+            } else {
+                xvel = 4.2f;
+            }
+        } else {
+            // key not held
+            key_held = false;
+            xvel = -scroll_speed;
+        }
 
-        if(transform.position.y > 1.2f){
-            is_jumping = false;
+        // update player velocity
+        rb.velocity = new Vector2(xvel, yvel);
+        // check if speed boost if keyheld
+        if(key_held){
+            speed_boost();
+        }
+        // make sure player stays in bounds
+        if(transform.position.x > 7.0f){
+            transform.position = new Vector3(7.0f, transform.position.y, transform.position.z);
+        }
+
+        if(transform.position.y > 1.8f){
+            // max ypos
+            transform.position = new Vector3(transform.position.x, 1.8f, transform.position.z);
+            //
+            yvel = -5.0f;
         }
 
         // update stamina

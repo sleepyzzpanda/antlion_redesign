@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 8277173514516709955}
   m_Layer: 0
   m_Name: tumbleweed
-  m_TagString: Tumbleweed
+  m_TagString: Obstacle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -46,7 +46,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 21e32bf81c62e854fa0aab58d04286ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  collider: {fileID: 0}
+  bcollider: {fileID: 8277173514516709955}
 --- !u!212 &6025913052806543323
 SpriteRenderer:
   m_ObjectHideFlags: 0

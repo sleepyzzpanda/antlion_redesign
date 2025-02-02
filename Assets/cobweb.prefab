@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 379924098312307002}
   m_Layer: 0
   m_Name: cobweb
-  m_TagString: Cobweb
+  m_TagString: Tumbleweed
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

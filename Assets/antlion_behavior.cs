@@ -19,7 +19,7 @@ public class antlion_behavior : MonoBehaviour
         if(player.GetComponent<player_behavior>().antlion_slow){
             speed = -0.15f;
         } else {
-            speed = 0.065f;
+            speed = 0.055f;
         }
         transform.position = transform.position + (Vector3.right * speed * Time.deltaTime);   
     }
