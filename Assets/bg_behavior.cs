@@ -9,7 +9,7 @@ public class bg_behavior : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        deadzone = -33;
+        deadzone = -71;
         bg_speed = 3.0f;
         
     }
@@ -22,7 +22,7 @@ public class bg_behavior : MonoBehaviour
         // when hits deadzone, reset position to x = 34
         if(transform.position.x < deadzone)
         {
-            transform.position = new Vector3(34, transform.position.y, transform.position.z);
+            transform.position = new Vector3(140, transform.position.y, transform.position.z);
         }
         
     }

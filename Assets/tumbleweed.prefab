@@ -47,6 +47,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bcollider: {fileID: 8277173514516709955}
+  tumbleweed: 1
 --- !u!212 &6025913052806543323
 SpriteRenderer:
   m_ObjectHideFlags: 0

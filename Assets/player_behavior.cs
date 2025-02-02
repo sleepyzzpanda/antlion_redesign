@@ -120,7 +120,11 @@ public class player_behavior : MonoBehaviour
         } else {
             // key not held
             key_held = false;
+            if(is_jumping){
+                xvel = -1.0f;
+            } else {
             xvel = -scroll_speed;
+            }
         }
 
         // update player velocity

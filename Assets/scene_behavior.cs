@@ -11,11 +11,12 @@ public class scene_behavior : MonoBehaviour
     public float obstacle_spawn_timer, coin_spawn_timer, falling_rock_spawn_timer;
     public GameObject player, antlion;
     // tutorial objects
-    public GameObject tutorial_1, tutorial_2, tutorial_3, tutorial_4, tutorial_5, tutorial_6, tutorial_7;
+    public GameObject tutorial_1, tutorial_2, tutorial_3, tutorial_4, tutorial_5, tutorial_6, tutorial_7, START_screen;
     public GameObject obstacle_1, falling_rock, thorns;
     public GameObject health_booster, stamina_booster, coin_booster, cobweb, tumbleweed, flag;
     private float speed;
-    public Text HP, STAMINA, GAMEOVER, COINS, PROGRESS, WINNER, RESTART;
+    public Text HP, STAMINA, COINS, PROGRESS;
+    public GameObject GAMEOVER, WINNER, RESTART, progress_icon;
     private int progress_counter, tutorial_counter;
     private bool sent_flag, tutorial;
     // -----------------------------------------------
@@ -48,7 +49,9 @@ public class scene_behavior : MonoBehaviour
         // pause all game components
         Time.timeScale = 0.0f;
         tutorial = true;   
-        tutorial_counter = 1;
+        tutorial_counter = 0;
+        // init ant icon
+        progress_icon.transform.position = new Vector3(-8.31f, 6.41f, -1.14f);
     }
 
     // Update is called once per frame
@@ -57,7 +60,11 @@ public class scene_behavior : MonoBehaviour
         // check if tutorial is playing
         if(tutorial){
             switch(tutorial_counter){
+                case 0:
+                    START_screen.gameObject.SetActive(true);
+                    break;
                 case 1:
+                    START_screen.gameObject.SetActive(false);
                     tutorial_1.gameObject.SetActive(true);
                     break;
                 case 2:
@@ -88,10 +95,10 @@ public class scene_behavior : MonoBehaviour
                     tutorial_7.gameObject.SetActive(false);
                     Time.timeScale = 1.0f;
                     tutorial = false;
-                    HP.gameObject.SetActive(true);
-                    STAMINA.gameObject.SetActive(true);
+                    // HP.gameObject.SetActive(true);
+                    // STAMINA.gameObject.SetActive(true);
                     COINS.gameObject.SetActive(true);
-                    PROGRESS.gameObject.SetActive(true);
+                    // PROGRESS.gameObject.SetActive(true);
                     reset_scene();
                     break;
             }
@@ -176,10 +183,12 @@ public class scene_behavior : MonoBehaviour
                 }
                 // instantiate coins based on probability
                 if(Random.Range(0, 3) == 0){
+                    // random y value between -0.46 and 1.0
+                    float ypos = Random.Range(-0.46f, 1.0f);
                     for(int i = 0; i < coin_count; i++)
                     {
                         // offset the xpos by 0.5
-                        Instantiate(coin_booster, new Vector3(12 + (i * 0.5f), -0.46f, 0), transform.rotation);
+                        Instantiate(coin_booster, new Vector3(12 + (i * 0.5f), ypos, 0), transform.rotation);
                     }
                 }
             }
@@ -196,7 +205,7 @@ public class scene_behavior : MonoBehaviour
         if(falling_rock_spawn_timer > falling_rock_spawn_rate)
         {
             if(Random.Range(0, 2) == 0){
-                Instantiate(falling_rock, new Vector3(10, 8.4f, 0), transform.rotation);
+                Instantiate(falling_rock, new Vector3(10, 6.75f, 0), transform.rotation);
                 falling_rock_spawn_timer = 0.0f;
             }
             
@@ -210,11 +219,15 @@ public class scene_behavior : MonoBehaviour
             progress_counter += 1;
         }
 
+        // update progress icon
+        progress_icon.transform.position = new Vector3(-8.31f + (progress_counter * 0.0292f), 6.41f, -1.14f);
+        
+
         // update UI
-        HP.text = "HP: " + player.GetComponent<player_behavior>().health;
-        STAMINA.text = "STAMINA: " + player.GetComponent<player_behavior>().stamina;
+        // HP.text = "HP: " + player.GetComponent<player_behavior>().health;
+        // STAMINA.text = "STAMINA: " + player.GetComponent<player_behavior>().stamina;
         COINS.text = "COINS: " + player.GetComponent<player_behavior>().coins;
-        PROGRESS.text = "PROGRESS: " + progress_counter + "%";
+        // PROGRESS.text = "PROGRESS: " + progress_counter + "%";
 
     }
 
@@ -275,7 +288,10 @@ public class scene_behavior : MonoBehaviour
         }
 
         // reset antlion
-        antlion.transform.position = new Vector3(-11.08f, 0.11f, -0.0259f);
+        antlion.transform.position = new Vector3(-16.0f, 0.9f, 0.0f);
+        // reset progress icon
+        progress_icon.transform.position = new Vector3(-8.31f, 6.41f, -1.14f);
+
     }
 
 }
