@@ -17,6 +17,9 @@ public class scene_behavior : MonoBehaviour
     private float speed;
     public Text HP, STAMINA, COINS, PROGRESS;
     public GameObject GAMEOVER, WINNER, RESTART, progress_icon;
+    public GameObject hp1, hp2, hp3, hp4, hp5;
+    public GameObject stam1, stam2, stam3, stam4, stam5;
+    public Sprite HPACTIVE, HPINACTIVE, STAMACTIVE, STAMINACTIVE;
     private int progress_counter, tutorial_counter;
     private bool sent_flag, tutorial;
     // -----------------------------------------------
@@ -136,6 +139,10 @@ public class scene_behavior : MonoBehaviour
             }
             return;
         }
+
+        // update player HP and stamina
+        updateHP();
+        updateSP();
 
         // generate obstacles + boosters
         if(obstacle_spawn_timer > obstacle_spawn_rate)
@@ -294,4 +301,97 @@ public class scene_behavior : MonoBehaviour
 
     }
 
+    void updateHP(){
+        // set sprite to active ver or inactive ver based on player health
+        switch(player.GetComponent<player_behavior>().health){
+            case 1:
+                hp1.GetComponent<SpriteRenderer>().sprite = HPACTIVE;
+                hp2.GetComponent<SpriteRenderer>().sprite = HPINACTIVE;
+                hp3.GetComponent<SpriteRenderer>().sprite = HPINACTIVE;
+                hp4.GetComponent<SpriteRenderer>().sprite = HPINACTIVE;
+                hp5.GetComponent<SpriteRenderer>().sprite = HPINACTIVE;
+                break;
+            case 2:
+                hp1.GetComponent<SpriteRenderer>().sprite = HPACTIVE;
+                hp2.GetComponent<SpriteRenderer>().sprite = HPACTIVE;
+                hp3.GetComponent<SpriteRenderer>().sprite = HPINACTIVE;
+                hp4.GetComponent<SpriteRenderer>().sprite = HPINACTIVE;
+                hp5.GetComponent<SpriteRenderer>().sprite = HPINACTIVE;
+                break;
+            case 3:
+                hp1.GetComponent<SpriteRenderer>().sprite = HPACTIVE;
+                hp2.GetComponent<SpriteRenderer>().sprite = HPACTIVE;
+                hp3.GetComponent<SpriteRenderer>().sprite = HPACTIVE;
+                hp4.GetComponent<SpriteRenderer>().sprite = HPINACTIVE;
+                hp5.GetComponent<SpriteRenderer>().sprite = HPINACTIVE;
+                break;
+            case 4:
+                hp1.GetComponent<SpriteRenderer>().sprite = HPACTIVE;
+                hp2.GetComponent<SpriteRenderer>().sprite = HPACTIVE;
+                hp3.GetComponent<SpriteRenderer>().sprite = HPACTIVE;
+                hp4.GetComponent<SpriteRenderer>().sprite = HPACTIVE;
+                hp5.GetComponent<SpriteRenderer>().sprite = HPINACTIVE;
+                break;
+            case 5:
+                hp1.GetComponent<SpriteRenderer>().sprite = HPACTIVE;
+                hp2.GetComponent<SpriteRenderer>().sprite = HPACTIVE;
+                hp3.GetComponent<SpriteRenderer>().sprite = HPACTIVE;
+                hp4.GetComponent<SpriteRenderer>().sprite = HPACTIVE;
+                hp5.GetComponent<SpriteRenderer>().sprite = HPACTIVE;
+                break;
+        }
+    }
+
+    void updateSP(){
+        // max 10 stamina, 5 icons
+        int sp = player.GetComponent<player_behavior>().stamina;
+        sp = sp / 2;
+        // set sprite to active ver or inactive ver based on player stamina
+        switch(sp){
+            case 1:
+                stam1.GetComponent<SpriteRenderer>().sprite = STAMACTIVE;
+                stam2.GetComponent<SpriteRenderer>().sprite = STAMINACTIVE;
+                stam3.GetComponent<SpriteRenderer>().sprite = STAMINACTIVE;
+                stam4.GetComponent<SpriteRenderer>().sprite = STAMINACTIVE;
+                stam5.GetComponent<SpriteRenderer>().sprite = STAMINACTIVE;
+                break;
+            case 2:
+                stam1.GetComponent<SpriteRenderer>().sprite = STAMACTIVE;
+                stam2.GetComponent<SpriteRenderer>().sprite = STAMACTIVE;
+                stam3.GetComponent<SpriteRenderer>().sprite = STAMINACTIVE;
+                stam4.GetComponent<SpriteRenderer>().sprite = STAMINACTIVE;
+                stam5.GetComponent<SpriteRenderer>().sprite = STAMINACTIVE;
+                break;
+            case 3:
+                stam1.GetComponent<SpriteRenderer>().sprite = STAMACTIVE;
+                stam2.GetComponent<SpriteRenderer>().sprite = STAMACTIVE;
+                stam3.GetComponent<SpriteRenderer>().sprite = STAMACTIVE;
+                stam4.GetComponent<SpriteRenderer>().sprite = STAMINACTIVE;
+                stam5.GetComponent<SpriteRenderer>().sprite = STAMINACTIVE;
+                break;
+            case 4:
+                stam1.GetComponent<SpriteRenderer>().sprite = STAMACTIVE;
+                stam2.GetComponent<SpriteRenderer>().sprite = STAMACTIVE;
+                stam3.GetComponent<SpriteRenderer>().sprite = STAMACTIVE;
+                stam4.GetComponent<SpriteRenderer>().sprite = STAMACTIVE;
+                stam5.GetComponent<SpriteRenderer>().sprite = STAMINACTIVE;
+                break;
+            case 5:
+                stam1.GetComponent<SpriteRenderer>().sprite = STAMACTIVE;
+                stam2.GetComponent<SpriteRenderer>().sprite = STAMACTIVE;
+                stam3.GetComponent<SpriteRenderer>().sprite = STAMACTIVE;
+                stam4.GetComponent<SpriteRenderer>().sprite = STAMACTIVE;
+                stam5.GetComponent<SpriteRenderer>().sprite = STAMACTIVE;
+                break;
+
+            case 0:
+                stam1.GetComponent<SpriteRenderer>().sprite = STAMINACTIVE;
+                stam2.GetComponent<SpriteRenderer>().sprite = STAMINACTIVE;
+                stam3.GetComponent<SpriteRenderer>().sprite = STAMINACTIVE;
+                stam4.GetComponent<SpriteRenderer>().sprite = STAMINACTIVE;
+                stam5.GetComponent<SpriteRenderer>().sprite = STAMINACTIVE;
+                break;
+        }
+    }        
 }
+
