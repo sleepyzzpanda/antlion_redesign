@@ -120,6 +120,8 @@ public class scene_behavior : MonoBehaviour
             // set gameover text to active
             GAMEOVER.gameObject.SetActive(true);
             RESTART.gameObject.SetActive(true);
+            // set coin text to inactive
+            COINS.gameObject.SetActive(false);
             // if player presses R, reset scene
             if(Input.GetKeyDown(KeyCode.R)){
                 reset_scene();
@@ -134,6 +136,8 @@ public class scene_behavior : MonoBehaviour
             // set winner text to active
             WINNER.gameObject.SetActive(true);
             RESTART.gameObject.SetActive(true);
+            // set coin text to inactive
+            COINS.gameObject.SetActive(false);
             if(Input.GetKeyDown(KeyCode.R)){
                 reset_scene();
             }
@@ -231,11 +235,7 @@ public class scene_behavior : MonoBehaviour
         
 
         // update UI
-        // HP.text = "HP: " + player.GetComponent<player_behavior>().health;
-        // STAMINA.text = "STAMINA: " + player.GetComponent<player_behavior>().stamina;
-        COINS.text = "COINS: " + player.GetComponent<player_behavior>().coins;
-        // PROGRESS.text = "PROGRESS: " + progress_counter + "%";
-
+        COINS.text = "X " + player.GetComponent<player_behavior>().coins;
     }
 
     void reset_scene(){
@@ -298,7 +298,8 @@ public class scene_behavior : MonoBehaviour
         antlion.transform.position = new Vector3(-16.0f, 0.9f, 0.0f);
         // reset progress icon
         progress_icon.transform.position = new Vector3(-8.31f, 6.41f, -1.14f);
-
+        // turn coin back on
+        COINS.gameObject.SetActive(true);
     }
 
     void updateHP(){
