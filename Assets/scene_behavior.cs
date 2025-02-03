@@ -20,7 +20,8 @@ public class scene_behavior : MonoBehaviour
     public GameObject hp1, hp2, hp3, hp4, hp5;
     public GameObject stam1, stam2, stam3, stam4, stam5;
     public Sprite HPACTIVE, HPINACTIVE, STAMACTIVE, STAMINACTIVE;
-    private int progress_counter, tutorial_counter;
+    private int tutorial_counter;
+    private float progress_counter;
     private bool sent_flag, tutorial;
     // -----------------------------------------------
 
@@ -36,7 +37,7 @@ public class scene_behavior : MonoBehaviour
         coin_spawn_rate = 3.2f;
         falling_rock_spawn_rate = 16.2f;
         falling_rock_spawn_timer = 0.0f;
-        progress_counter = 0;
+        progress_counter = 0.0f;
         sent_flag = false;
         // set gameover text to inactive
         GAMEOVER.gameObject.SetActive(false);  
@@ -227,7 +228,7 @@ public class scene_behavior : MonoBehaviour
         }
         // update progress counter
         if(progress_counter < 100 && Time.frameCount % 100 == 0){
-            progress_counter += 1;
+            progress_counter += 2.0f;
         }
 
         // update progress icon
@@ -256,6 +257,8 @@ public class scene_behavior : MonoBehaviour
         player.GetComponent<player_behavior>().slow = false;
         // reset player slow time
         player.GetComponent<player_behavior>().slow_time = 0.0f;
+        // reset play is_hurt
+        player.GetComponent<player_behavior>().is_hurt = false;
         // reset player progress counter
         progress_counter = 0;
         // reset player sent flag
@@ -295,7 +298,7 @@ public class scene_behavior : MonoBehaviour
         }
 
         // reset antlion
-        antlion.transform.position = new Vector3(-16.0f, 0.9f, 0.0f);
+        antlion.transform.position = new Vector3(-12.0f, 0.9f, 0.0f);
         // reset progress icon
         progress_icon.transform.position = new Vector3(-8.31f, 6.41f, -1.14f);
         // turn coin back on

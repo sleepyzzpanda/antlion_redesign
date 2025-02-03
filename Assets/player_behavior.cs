@@ -18,11 +18,15 @@ public class player_behavior : MonoBehaviour
     //public float boost_timer;
     public bool alive, slow, antlion_slow, key_held;
     private float antlion_slow_time;
-    public float slow_time;
-    public bool gameover;
+    public float slow_time, hurt_time;
+    public bool gameover, is_hurt;
     public SpriteRenderer sprite_renderer;
     public Sprite player_sprite;
     public Sprite player_sprite_jump;
+    public Sprite p0, p1, p2, p3, p4, p5, p6, p7;
+    public Sprite sp0, sp1, sp2, sp3, sp4, sp5, sp6, sp7;
+    public Sprite dash, hurt;
+    public int frame_count;
     public AudioSource audio_player;
     public AudioClip coin_sound, powerup_sound, damage_sound, gameover_sound, antlion_sound, win_sound, jump_sound;
     //public Text key;
@@ -47,6 +51,9 @@ public class player_behavior : MonoBehaviour
         antlion_slow_time = 0.0f;
         xvel = 0.0f;
         yvel = 0.0f;
+        frame_count = 1;;
+        is_hurt = false;
+        hurt_time = 0.0f;
         
     }
 
@@ -62,8 +69,6 @@ public class player_behavior : MonoBehaviour
             }
         }
         
-        //key.text = key_text;
-        //key_text = "KEY: ";
         // moving mechanics
         // check if player slow
         if(slow){
@@ -93,10 +98,12 @@ public class player_behavior : MonoBehaviour
                     is_jumping = false;
                     // change to normal sprite
                     sprite_renderer.sprite = player_sprite;
+                    // sprite_running(frame_count);
                 }
             } else {
                 // change to normal sprite
                 sprite_renderer.sprite = player_sprite;
+                // sprite_running(frame_count);
                 // set yvel
                 yvel = -5.0f;
             }
@@ -109,6 +116,7 @@ public class player_behavior : MonoBehaviour
             } else {
                 xvel = -scroll_speed - 2.2f;
             }
+            sprite_running(frame_count);
         } else if(Input.GetKey(KeyCode.RightArrow)){
             // keyheld
             key_held = true;
@@ -117,6 +125,7 @@ public class player_behavior : MonoBehaviour
             } else {
                 xvel = 4.2f;
             }
+            sprite_running(frame_count);
         } else {
             // key not held
             key_held = false;
@@ -124,6 +133,10 @@ public class player_behavior : MonoBehaviour
                 xvel = -1.0f;
             } else {
             xvel = -scroll_speed;
+            }
+            sprite_renderer.sprite = player_sprite;
+            if(slow && !is_hurt){
+                sprite_renderer.sprite = sp0;
             }
         }
 
@@ -154,6 +167,23 @@ public class player_behavior : MonoBehaviour
         if(transform.position.x < -11f){
             alive = false;
         }
+
+        if(frame_count > 35){
+            frame_count = 1;
+        } else {
+            frame_count += 1;
+        }
+
+        if(is_hurt){
+            if(hurt_time > 0.0f){
+                hurt_time -= Time.deltaTime;
+            } else {
+                is_hurt = false;
+            }
+        }
+        if(is_hurt){
+            sprite_renderer.sprite = hurt;
+        }
         
     }
 
@@ -167,6 +197,8 @@ public class player_behavior : MonoBehaviour
                 new_vel.x *= 10;
                 rb.velocity = new_vel;
                 stamina -= 1;
+                // set player sprite to dash
+                sprite_renderer.sprite = dash;
             }
         }
     }
@@ -182,6 +214,25 @@ public class player_behavior : MonoBehaviour
                 audio_player.PlayOneShot(gameover_sound);
             }
             slow = true;
+            is_hurt = true;
+            hurt_time = 3.0f;
+            slow_time = 3.0f;
+            // destroy obstacle
+            Destroy(collision.gameObject);
+            // play damage sound
+            audio_player.PlayOneShot(damage_sound);
+        } 
+        if (collision.gameObject.CompareTag("Obstacle2")) 
+        { 
+            health -= 2;
+            if(health <= 0){
+                alive = false;
+                // play gameover sound
+                audio_player.PlayOneShot(gameover_sound);
+            }
+            slow = true;
+            is_hurt = true;
+            hurt_time = 3.0f;
             slow_time = 3.0f;
             // destroy obstacle
             Destroy(collision.gameObject);
@@ -246,6 +297,63 @@ public class player_behavior : MonoBehaviour
             audio_player.PlayOneShot(gameover_sound);
         }
     } 
+    void sprite_running(int frame_count){
+        int frame = frame_count / 5;
+        if(!slow){switch(frame){
+            case 0:
+                sprite_renderer.sprite = p0;
+                break;
+            case 1:
+                sprite_renderer.sprite = p1;
+                break;
+            case 2:
+                sprite_renderer.sprite = p2;
+                break;
+            case 3:
+                sprite_renderer.sprite = p3;
+                break;
+            case 4:
+                sprite_renderer.sprite = p4;
+                break;
+            case 5:
+                sprite_renderer.sprite = p5;
+                break;
+            case 6:
+                sprite_renderer.sprite = p6;
+                break;
+            case 7:
+                sprite_renderer.sprite = p7;
+                break;
+            }
+        } else {
+            switch(frame){
+            case 0:
+                sprite_renderer.sprite = sp0;
+                break;
+            case 1:
+                sprite_renderer.sprite = sp1;
+                break;
+            case 2:
+                sprite_renderer.sprite = sp2;
+                break;
+            case 3:
+                sprite_renderer.sprite = sp3;
+                break;
+            case 4:
+                sprite_renderer.sprite = sp4;
+                break;
+            case 5:
+                sprite_renderer.sprite = sp5;
+                break;
+            case 6:
+                sprite_renderer.sprite = sp6;
+                break;
+            case 7:
+                sprite_renderer.sprite = sp7;
+                break;
+            }
+        }
+    }
 }
 
 
